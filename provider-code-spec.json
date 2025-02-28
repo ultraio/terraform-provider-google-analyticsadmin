@@ -1,0 +1,143 @@
+{
+  "provider": {
+    "name": "analyticsadmin"
+  },
+  "resources": [
+    {
+      "name": "bigquerylink",
+      "schema": {
+        "attributes": [
+          {
+            "name": "name",
+            "string": {
+              "description": "Output only. Resource name of this BigQuery link. Format: 'properties/{property_id}/bigQueryLinks/{bigquery_link_id}' Format: 'properties/1234/bigQueryLinks/abc567'",
+              "computed_optional_required": "computed"
+            }
+          },
+          {
+            "name": "project",
+            "string": {
+              "description": "Immutable. The linked Google Cloud project. When creating a BigQueryLink, you may provide this resource name using either a project number or project ID. Once this resource has been created, the returned project will always have a project that contains a project number. Format: 'projects/{project number}' Example: 'projects/1234'",
+              "computed_optional_required": "required",
+              "validators": [
+                {
+                  "custom": {
+                    "imports": [
+                      {
+                        "path": "regexp"
+                      },
+                      {
+                        "path": "github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+                      }
+                    ],
+                    "schema_definition": "stringvalidator.RegexMatches(regexp.MustCompile(`projects/\\w.`), \"Must match Format: 'projects/{project number}'\")"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "property_id",
+            "string": {
+              "description": "The Google Analytics property",
+              "computed_optional_required": "required"
+            }
+          },
+          {
+            "name": "create_time",
+            "string": {
+              "description": "Output only. Time when the link was created.",
+              "computed_optional_required": "computed_optional"
+            }
+          },
+          {
+            "name": "daily_export",
+            "bool": {
+              "description": "If set true, enables daily data export to the linked Google Cloud project.",
+              "computed_optional_required": "computed_optional",
+              "default": {
+                "static": false
+              }
+            }
+          },
+          {
+            "name": "streaming_export",
+            "bool": {
+              "description": "If set true, enables streaming export to the linked Google Cloud project.",
+              "computed_optional_required": "computed_optional",
+              "default": {
+                "static": false
+              }
+            }
+          },
+          {
+            "name": "fresh_daily_export",
+            "bool": {
+              "description": "If set true, enables fresh daily export to the linked Google Cloud project.",
+              "computed_optional_required": "computed_optional",
+              "default": {
+                "static": false
+              }
+            }
+          },
+          {
+            "name": "include_advertising_id",
+            "bool": {
+              "description": "If set true, exported data will include advertising identifiers for mobile app streams.",
+              "computed_optional_required": "computed_optional",
+              "default": {
+                "static": false
+              }
+            }
+          },
+          {
+            "name": "export_streams",
+            "list": {
+              "description": "The list of streams under the parent property for which data will be exported. Format: properties/{property_id}/dataStreams/{stream_id} Example: ['properties/1000/dataStreams/2000']",
+              "computed_optional_required": "optional",
+              "element_type": {
+                "string": {}
+              },
+              "validators": [
+                {
+                  "custom": {
+                    "imports": [
+                      {
+                        "path": "regexp"
+                      },
+                      {
+                        "path": "github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+                      },
+                      {
+                        "path": "github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+                      }
+                    ],
+                    "schema_definition": "listvalidator.ValueStringsAre(stringvalidator.RegexMatches(regexp.MustCompile(`properties/\\w./dataStreams/\\w.`), \"Must match Format: 'properties/{property_id}/dataStreams/{stream_id}'\"))"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "exclude_events",
+            "list": {
+              "description": "The list of event names that will be excluded from exports",
+              "computed_optional_required": "optional",
+              "element_type": {
+                "string": {}
+              }
+            }
+          },
+          {
+            "name": "dataset_location",
+            "string": {
+              "description": "Required. Immutable. The geographic location where the created BigQuery dataset should reside. See https://cloud.google.com/bigquery/docs/locations for supported locations.",
+              "computed_optional_required": "required"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "version": "0.1"
+}

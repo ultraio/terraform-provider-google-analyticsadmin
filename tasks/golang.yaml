@@ -1,0 +1,30 @@
+version: "3"
+
+tasks:
+  build:
+    desc: Build the golang binary
+    cmd: go build -v ./...
+
+  install:
+    desc: Install the golang binary
+    cmd: go install -v ./...
+
+  lint:
+    desc: Lint the golang module
+    cmd: golangci-lint run
+
+  docs:
+    desc: Generate the goland module docs
+    cmd: cd tools; go generate ./...
+
+  fmt:
+    desc: Lint the golang module
+    cmd: gofmt -s -w -e .
+
+  test:
+    desc: Run all module unit test
+    cmd: go test -v -cover -timeout=120s -parallel=10 ./...
+
+  testacc:
+    desc: Run all module acceptance test
+    cmd: TF_ACC=1 go test -v -cover -timeout=120s  ./...

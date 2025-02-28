@@ -1,0 +1,8 @@
+{
+    "yaml.schemas": {
+        "https://taskfile.dev/schema.json": [
+            "file:///home/fabien/work/ultra/devops/terraform-provider-google-analyticsadmin/tasks/golang.yaml",
+            "file:///home/fabien/work/ultra/devops/terraform-provider-google-analyticsadmin/tasks/tfplugingen.yaml"
+        ]
+    }
+}

@@ -1,0 +1,31 @@
+version: "3"
+
+vars:
+  DIR: ./internal/provider
+
+tasks:
+  scaffold:provider:
+    desc: Scaffold a new provider
+    cmd: tfplugingen-framework scaffold provider --name {{.PROVIDER}} --output-dir {{.DIR}} {{.CLI_ARGS}}
+    requires:
+      vars: [PROVIDER]
+
+  scaffold:resource:
+    desc: Scaffold a new resource
+    cmd: tfplugingen-framework scaffold resource --name {{.RESOURCE}} --output-dir {{.DIR}} {{.CLI_ARGS}}
+    requires:
+      vars: [RESOURCE]
+
+  scaffold:datasource:
+    desc: Scaffold a new datasource
+    cmd: tfplugingen-framework scaffold data-source --name {{.DATASOURCE}} --output-dir {{.DIR}} {{.CLI_ARGS}}
+    requires:
+      vars: [DATASOURCE]
+
+  generate:resources:
+    desc: Generate resources terraform data schema
+    cmd: tfplugingen-framework generate resources --input ./provider-code-spec.json --output {{.DIR}} {{.CLI_ARGS}}
+
+  generate:datasources:
+    desc: Generate datasources terraform data schema
+    cmd: tfplugingen-framework generate data-sources --input ./provider-code-spec.json --output {{.DIR}} {{.CLI_ARGS}}
