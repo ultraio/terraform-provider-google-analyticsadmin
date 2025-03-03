@@ -139,5 +139,51 @@
       }
     }
   ],
+  "datasources": [
+    {
+      "name": "datastreams",
+      "schema": {
+        "description": "List all datastreams for a property_id",
+        "attributes": [
+          {
+            "name": "property_id",
+            "string": {
+              "description": "The Google Analytics property",
+              "computed_optional_required": "required"
+            }
+          },
+          {
+            "name": "data_streams",
+            "list_nested": {
+              "description": "Ouput: The list of data  that will be excluded from exports",
+              "computed_optional_required": "computed_optional",
+              "nested_object": {
+                "attributes": [
+                  {
+                    "name": "name",
+                    "string": {
+                      "computed_optional_required": "computed"
+                    }
+                  },
+                  {
+                    "name": "type",
+                    "string": {
+                      "computed_optional_required": "computed"
+                    }
+                  },
+                  {
+                    "name": "display_name",
+                    "string": {
+                      "computed_optional_required": "computed_optional"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
   "version": "0.1"
 }

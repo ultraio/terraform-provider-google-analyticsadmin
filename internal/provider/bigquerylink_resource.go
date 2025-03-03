@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 )
 
@@ -97,8 +96,6 @@ func (r *bigquerylinkResource) Read(ctx context.Context, req resource.ReadReques
 		return
 	}
 
-	tflog.Info(ctx, "####Read")
-
 	// Read API call logic
 	apireq := &adminpb.GetBigQueryLinkRequest{
 		Name: data.Name.ValueString(),
@@ -124,8 +121,6 @@ func (r *bigquerylinkResource) Read(ctx context.Context, req resource.ReadReques
 
 func (r *bigquerylinkResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data resource_bigquerylink.BigquerylinkModel
-
-	tflog.Info(ctx, "####Update")
 
 	// Read Terraform plan data into the model
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)

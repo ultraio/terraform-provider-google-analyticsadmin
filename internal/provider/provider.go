@@ -104,7 +104,9 @@ func (p *analyticsadminProvider) Metadata(ctx context.Context, req provider.Meta
 }
 
 func (p *analyticsadminProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
-	return []func() datasource.DataSource{}
+	return []func() datasource.DataSource{
+		NewDatastreamsDataSource,
+	}
 }
 
 func (p *analyticsadminProvider) Resources(ctx context.Context) []func() resource.Resource {
