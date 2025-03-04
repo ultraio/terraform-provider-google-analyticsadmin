@@ -3,12 +3,14 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 	"terraform-provider-google-analyticsadmin/internal/provider/resource_bigquerylink"
 	"time"
 
 	admin "cloud.google.com/go/analytics/admin/apiv1alpha"
 	"cloud.google.com/go/analytics/admin/apiv1alpha/adminpb"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -16,6 +18,7 @@ import (
 
 var _ resource.Resource = (*bigquerylinkResource)(nil)
 var _ resource.ResourceWithConfigure = (*bigquerylinkResource)(nil)
+var _ resource.ResourceWithImportState = (*bigquerylinkResource)(nil)
 
 func NewBigquerylinkResource() resource.Resource {
 	return &bigquerylinkResource{}
@@ -81,7 +84,7 @@ func (r *bigquerylinkResource) Create(ctx context.Context, req resource.CreateRe
 		return
 	}
 
-	setComputedField(&data, apiresp)
+	setComputedAttr(&data, apiresp)
 
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -159,7 +162,7 @@ func (r *bigquerylinkResource) Update(ctx context.Context, req resource.UpdateRe
 		return
 	}
 
-	setComputedField(&data, apiresp)
+	setComputedAttr(&data, apiresp)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -190,7 +193,7 @@ func (r *bigquerylinkResource) Delete(ctx context.Context, req resource.DeleteRe
 	}
 }
 
-func setComputedField(data *resource_bigquerylink.BigquerylinkModel, link *adminpb.BigQueryLink) {
+func setComputedAttr(data *resource_bigquerylink.BigquerylinkModel, link *adminpb.BigQueryLink) {
 	data.Name = types.StringValue(link.Name)
 	data.CreateTime = types.StringValue(link.CreateTime.AsTime().Format(time.RFC3339))
 }
@@ -234,11 +237,20 @@ func unmarshal(ctx context.Context, data *resource_bigquerylink.BigquerylinkMode
 		return diags
 	}
 
+	setComputedAttr(data, link)
+
+	data.DatasetLocation = types.StringValue(link.DatasetLocation)
 	data.DailyExport = types.BoolValue(link.DailyExportEnabled)
 	data.ExcludeEvents = events
 	data.ExportStreams = streams
 	data.FreshDailyExport = types.BoolValue(link.FreshDailyExportEnabled)
 	data.IncludeAdvertisingId = types.BoolValue(link.IncludeAdvertisingId)
+	data.Project = types.StringValue(link.Project)
+	data.PropertyId = types.StringValue(strings.Split(link.Name, "/")[1])
 	data.StreamingExport = types.BoolValue(link.StreamingExportEnabled)
 	return diag.Diagnostics{}
+}
+
+func (r *bigquerylinkResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	resource.ImportStatePassthroughID(ctx, path.Root("name"), req, resp)
 }

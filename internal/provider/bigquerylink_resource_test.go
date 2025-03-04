@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"errors"
 	"fmt"
 	"regexp"
 	"terraform-provider-google-analyticsadmin/internal/test_helper"
@@ -11,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
 
@@ -94,6 +96,29 @@ func TestAccBigQueryLinkResource_basic(t *testing.T) {
 					),
 				},
 			},
+			// ImportState testing
+			{
+				ResourceName: "analyticsadmin_bigquerylink.link",
+				ImportStateIdFunc: func(s *terraform.State) (string, error) {
+					var name string
+					for _, m := range s.Modules {
+						if len(m.Resources) > 0 {
+							if v, ok := m.Resources["analyticsadmin_bigquerylink.link"]; ok {
+								name = v.Primary.Attributes["name"]
+							}
+						}
+					}
+
+					if len(name) == 0 {
+						return "", errors.New("Failed to find resource in state")
+					}
+
+					return name, nil
+				},
+				ImportState:                          true,
+				ImportStateVerify:                    true,
+				ImportStateVerifyIdentifierAttribute: "name",
+			},
 			// Delete
 		},
 	})
@@ -110,7 +135,7 @@ resource "analyticsadmin_bigquerylink" "%s" {
 		`, name, project, property_id)
 	}
 
-	return providerConfig + link("link", "acoustic-arch-243714", "480154826")
+	return providerConfig + link("link", "1009831384334", "480154826")
 }
 
 func testAccBigQueryLinkResourceBuilder_update() string {
@@ -125,5 +150,5 @@ resource "analyticsadmin_bigquerylink" "%s" {
 		`, name, project, property_id)
 	}
 
-	return providerConfig + link("link", "acoustic-arch-243714", "480154826")
+	return providerConfig + link("link", "1009831384334", "480154826")
 }

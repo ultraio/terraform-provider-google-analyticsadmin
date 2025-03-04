@@ -71,8 +71,8 @@ func BigquerylinkResourceSchema(ctx context.Context) schema.Schema {
 			},
 			"project": schema.StringAttribute{
 				Required:            true,
-				Description:         "Immutable. The linked Google Cloud project. When creating a BigQueryLink, you may provide this resource name using either a project number or project ID. Once this resource has been created, the returned project will always have a project that contains a project number. Format: 'projects/{project number}' Example: 'projects/1234'",
-				MarkdownDescription: "Immutable. The linked Google Cloud project. When creating a BigQueryLink, you may provide this resource name using either a project number or project ID. Once this resource has been created, the returned project will always have a project that contains a project number. Format: 'projects/{project number}' Example: 'projects/1234'",
+				Description:         "Immutable. The linked Google Cloud project ID. Once this resource has been created, the returned project will always have a project that contains a project number. Format: 'projects/{project number}' Example: 'projects/1234'",
+				MarkdownDescription: "Immutable. The linked Google Cloud project ID. Once this resource has been created, the returned project will always have a project that contains a project number. Format: 'projects/{project number}' Example: 'projects/1234'",
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`projects/\w.`), "Must match Format: 'projects/{project number}'"),
 				},
