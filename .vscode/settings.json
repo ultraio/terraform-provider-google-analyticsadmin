@@ -1,8 +1,16 @@
 {
-    "yaml.schemas": {
-        "https://taskfile.dev/schema.json": [
-            "file:///home/fabien/work/ultra/devops/terraform-provider-google-analyticsadmin/tasks/golang.yaml",
-            "file:///home/fabien/work/ultra/devops/terraform-provider-google-analyticsadmin/tasks/tfplugingen.yaml"
-        ]
+  "yaml.schemas": {
+    "https://taskfile.dev/schema.json": [
+      "file:///home/fabien/work/ultra/devops/terraform-provider-google-analyticsadmin/tasks/golang.yaml",
+      "file:///home/fabien/work/ultra/devops/terraform-provider-google-analyticsadmin/tasks/tfplugingen.yaml"
+    ]
+  },
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "file:///home/fabien/work/ultra/devops/terraform-provider-google-analyticsadmin/provider-code-spec.json"
+      ],
+      "url": "https://raw.githubusercontent.com/hashicorp/terraform-plugin-codegen-spec/refs/heads/main/spec/v0.1/schema.json"
     }
+  ]
 }
